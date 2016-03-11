@@ -40,11 +40,6 @@ ofxUIButton *ofxUIEventArgs::getButton()
     return (ofxUIButton *) widget;
 }
 
-ofxUIRadio *ofxUIEventArgs::getRadio()
-{
-    return (ofxUIRadio *) widget;
-}
-
 ofxUIToggle *ofxUIEventArgs::getToggle()
 {
     return (ofxUIToggle *) widget;
@@ -63,31 +58,6 @@ ofxUICanvas *ofxUIEventArgs::getCanvasParent()
 ofxUIWidget *ofxUIEventArgs::getParent()
 {
     return widget->getParent();
-}
-
-bool ofxUIEventArgs::isName(string _name)
-{
-    return (getName() == _name) ? true : false; 
-}
-
-bool ofxUIEventArgs::getBool()
-{
-    return getButton()->getValue();
-}
-
-float ofxUIEventArgs::getFloat()
-{
-    return getSlider()->getValue();
-}
-
-double ofxUIEventArgs::getDouble()
-{
-    return getSlider()->getValue();
-}
-
-int ofxUIEventArgs::getInt()
-{
-    return getSlider()->getValue();
 }
 
 string ofxUIEventArgs::getName()

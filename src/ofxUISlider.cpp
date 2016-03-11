@@ -102,11 +102,11 @@ void ofxUISlider_<T>::init(string _name, T _min, T _max, T *_value, float w, flo
     addEmbeddedWidget(label);
     label->setVisible(drawLabel);
 
-    increment = ABS(max - min) / 10.0;
+    increment = ABS(max - min) / 100.0;
     bRoundedToNearestInt = false;
     bClampValue = true;
     bSticky = false;
-    stickyValue = ABS(max - min) / 100.0;
+    stickyValue = MAX(10.0*ceil(increment), 1.0);
 }
 
 template<typename T>
@@ -433,10 +433,9 @@ T ofxUISlider_<T>::getIncrement()
 }
 
 template<typename T>
-ofxUISlider_<T>* ofxUISlider_<T>::setIncrement(T _increment)
+void ofxUISlider_<T>::setIncrement(T _increment)
 {
     increment = _increment;
-    return this; 
 }
 
 template<typename T>
@@ -542,7 +541,7 @@ T ofxUISlider_<T>::getScaledValue()
     T val = ofxUIMap(value, 0.0, 1.0, min, max, bClampValue);
     if(!bRoundedToNearestInt && bSticky)
     {
-        val = ceil((double)val/(double)stickyValue)*(double)stickyValue;
+        val = ceil(val/stickyValue)*stickyValue;
     }
     return val; 
 }
@@ -608,16 +607,6 @@ void ofxUISlider_<T>::setMaxAndMin(T _max, T _min, bool bKeepValueTheSame)
         updateValueRef();
         updateLabel();
     }
-}
-template<typename T>
-void ofxUISlider_<T>::setValueReference(T *_value)
-{
-    if(!useReference)
-    {
-        useReference = false;
-        delete valueRef;
-    }
-    valueRef = _value;
 }
 
 template<typename T>

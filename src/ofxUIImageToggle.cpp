@@ -72,7 +72,8 @@ void ofxUIImageToggle::init(float x, float y, float w, float h, bool *_value, st
     
     setValue(*_value);
     
-    img = new ofImage(_pathURL);
+    img = new ofImage();
+    img->loadImage(_pathURL);
     bChangedImage = false;
 }
 

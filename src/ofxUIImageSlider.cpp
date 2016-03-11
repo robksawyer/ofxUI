@@ -114,23 +114,31 @@ void ofxUIImageSlider::init(float x, float y, float w, float h, float _min, floa
         extension = _pathURL.substr(found);
     }
     
-    track = new ofImage(coreURL+"track"+extension);         //back
+    track = new ofImage();         //back
+    track->loadImage(coreURL+"track"+extension);
     
-    trackleft = new ofImage(coreURL+"trackleft"+extension);         //back
+    trackleft = new ofImage();         //back
+    trackleft->loadImage(coreURL+"trackleft"+extension);
     tlaspect = (float)trackleft->getWidth()/(float)trackleft->getHeight();
     
-    trackright = new ofImage(coreURL+"trackright"+extension);         //back
+    trackright = new ofImage();         //back
+    trackright->loadImage(coreURL+"trackright"+extension);
     traspect = (float)trackright->getWidth()/(float)trackright->getHeight();
     
-    progress = new ofImage(coreURL+"progress"+extension);      //fill
+    progress = new ofImage();      //fill
+    progress->loadImage(coreURL+"progress"+extension);
     
-    progressright = new ofImage(coreURL+"progressright"+extension);      //fill
+    progressright = new ofImage();      //fill
+    progressright->loadImage(coreURL+"progressright"+extension);
     
-    progressleft = new ofImage(coreURL+"progressleft"+extension);      //fill
+    progressleft = new ofImage();      //fill
+    progressleft->loadImage(coreURL+"progressleft"+extension);
     
-    handle = new ofImage(coreURL+"handle"+extension);        //handle
+    handle = new ofImage();        //handle
+    handle->loadImage(coreURL+"handle"+extension);
     
-    handleDown = new ofImage(coreURL+"handledown"+extension);    //handleOver State
+    handleDown = new ofImage();    //handleOver State
+    handleDown->loadImage(coreURL+"handledown"+extension);
     
     handleHalfWidth = handle->getWidth()*.5;
     handleHalfHeight = handle->getHeight()*.5;
@@ -302,7 +310,6 @@ void ofxUIImageSlider::input(float x, float y)
         value = MIN(1.0, MAX(0.0, 1.0-imageRect->percentInside(x, y).y));
     }
 
-    updateValueRef();
     updateLabel();
 }
 

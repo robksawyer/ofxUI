@@ -25,32 +25,25 @@
 #include "ofxUICanvas.h"
 #include "ofxUI.h"
 
-ofxUICanvas::~ofxUICanvas()
-{
+ofxUICanvas::~ofxUICanvas() {
     disable();
-    if(GUIevent != NULL)
-    {
+    if(GUIevent != NULL) {
         delete GUIevent;
     }
-    if(hasSharedResources == false)
-    {
-        if(font_large != NULL)
-        {
+    if(hasSharedResources == false) {
+        if(font_large != NULL) {
             delete font_large;
         }
-        if(font_medium != NULL)
-        {
+        if(font_medium != NULL) {
             delete font_medium;
         }
-        if(font_small != NULL)
-        {
+        if(font_small != NULL) {
             delete font_small;
         }
     }
     vector<ofxUIWidget *>::iterator it = widgets.begin();
     vector<ofxUIWidget *>::iterator eit = widgets.end();
-    for(; it != eit; ++it)
-    {
+    for(; it != eit; ++it) {
         ofxUIWidget *w = (*it);
         delete w;
     }
@@ -103,8 +96,7 @@ enabled(other.enabled)
 }
 
 // Assignment operator to handle heap allocation during assignment.
-ofxUICanvas& ofxUICanvas::operator=(const ofxUICanvas &other)
-{
+ofxUICanvas& ofxUICanvas::operator=(const ofxUICanvas &other) {
     hasSharedResources = false;
     widget_color_back = other.widget_color_back;
     widget_color_outline = other.widget_color_outline;
@@ -349,19 +341,16 @@ enabled(false)
     addSpacer();
 }
 
-void ofxUICanvas::init(int x, int y, int w, int h, ofxUICanvas *sharedResources)
-{
+void ofxUICanvas::init(int x, int y, int w, int h, ofxUICanvas *sharedResources) {
     initRect(x, y, w, h);
     name = string("OFX_UI_WIDGET_CANVAS");
     kind = OFX_UI_WIDGET_CANVAS;
-    if(hasSharedResources)
-    {
+    if(hasSharedResources) {
         font_large = sharedResources->getFontLarge();
         font_medium = sharedResources->getFontMedium();
         font_small = sharedResources->getFontSmall();
     }
-    else
-    {
+    else {
         font_large = new ofxUIFont();
         font_medium = new ofxUIFont();
         font_small = new ofxUIFont();
@@ -373,8 +362,7 @@ void ofxUICanvas::init(int x, int y, int w, int h, ofxUICanvas *sharedResources)
     enable();
 }
 
-void ofxUICanvas::copyCanvasStyle(ofxUICanvas *styler)
-{
+void ofxUICanvas::copyCanvasStyle(ofxUICanvas *styler) {
     setUIColors(styler->getWidgetColorBack(),
                 styler->getWidgetColorOutline(),
                 styler->getWidgetColorOutlineHighlight(),
@@ -419,8 +407,7 @@ void ofxUICanvas::copyCanvasProperties(ofxUICanvas *styler) {
 
 #ifndef OFX_UI_NO_XML
 
-void ofxUICanvas::saveSettings(string fileName)
-{
+void ofxUICanvas::saveSettings(string fileName) {
     ofxXmlSettings *XML = new ofxXmlSettings();
     int len = widgetsWithState.size();
     for(int i = 0; i < len; ++i) {
@@ -436,18 +423,15 @@ void ofxUICanvas::saveSettings(string fileName)
     delete XML;
 }
 
-void ofxUICanvas::setTriggerWidgetsUponLoad(bool _bTriggerWidgetsUponLoad)
-{
+void ofxUICanvas::setTriggerWidgetsUponLoad(bool _bTriggerWidgetsUponLoad) {
     bTriggerWidgetsUponLoad = _bTriggerWidgetsUponLoad;
 }
 
-bool ofxUICanvas::getTriggerWidgetsUponLoad()
-{
+bool ofxUICanvas::getTriggerWidgetsUponLoad() {
     return bTriggerWidgetsUponLoad;
 }
 
-void ofxUICanvas::loadSettings(string fileName)
-{
+void ofxUICanvas::loadSettings(string fileName) {
     ofxXmlSettings *XML = new ofxXmlSettings();
     XML->loadFile(fileName);
     int widgetTags = XML->getNumTags("Widget");
@@ -469,18 +453,15 @@ void ofxUICanvas::loadSettings(string fileName)
 
 #endif
 
-ofxUIFont *ofxUICanvas::getFontLarge()
-{
+ofxUIFont *ofxUICanvas::getFontLarge() {
     return font_large;
 }
 
-ofxUIFont *ofxUICanvas::getFontMedium()
-{
+ofxUIFont *ofxUICanvas::getFontMedium() {
     return font_medium;
 }
 
-ofxUIFont *ofxUICanvas::getFontSmall()
-{
+ofxUIFont *ofxUICanvas::getFontSmall() {
     return font_small;
 }
 
@@ -508,7 +489,7 @@ void ofxUICanvas::setFontSize(ofxUIWidgetFontType _kind, int _size, int _resolut
                 delete font_large;
             }
             font_large = new ofxUIFont();
-            font_large->load(fontName,_size,true, true, false, 0.0,_resolution);
+            font_large->loadFont(fontName,_size,true, true, false, 0.0,_resolution);
         }
             break;
             
@@ -518,7 +499,7 @@ void ofxUICanvas::setFontSize(ofxUIWidgetFontType _kind, int _size, int _resolut
                 delete font_medium;
             }
             font_medium = new ofxUIFont();
-            font_medium->load(fontName,_size,true, true, false, 0.0,_resolution);
+            font_medium->loadFont(fontName,_size,true, true, false, 0.0,_resolution);
         }
             break;
             
@@ -528,7 +509,7 @@ void ofxUICanvas::setFontSize(ofxUIWidgetFontType _kind, int _size, int _resolut
                 delete font_small;
             }
             font_small = new ofxUIFont();
-            font_small->load(fontName,_size,true, true, false, 0.0,_resolution);
+            font_small->loadFont(fontName,_size,true, true, false, 0.0,_resolution);
         }
             break;
     }
@@ -586,13 +567,11 @@ void ofxUICanvas::disable() {
     }
 }
 
-void ofxUICanvas::update()
-{
+void ofxUICanvas::update() {
     if (!isVisible()) { return; } // Custom to save framerate
     vector<ofxUIWidget *>::iterator it = widgets.begin();
     vector<ofxUIWidget *>::iterator eit = widgets.end();
-    for(; it != eit; ++it)
-    {
+    for(; it != eit; ++it) {
         (*it)->update();
     }
 }
@@ -600,8 +579,8 @@ void ofxUICanvas::update()
 void ofxUICanvas::draw() {
     ofxUIPushStyle();
 
-    ofDisableDepthTest();
-    ofDisableLighting();
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
 
     glEnable(GL_BLEND);
 #ifndef OFX_UI_TARGET_TOUCH
@@ -812,14 +791,11 @@ void ofxUICanvas::mousePressed(int x, int y, int button) {
     }
 }
 
-void ofxUICanvas::mouseReleased(int x, int y, int button)
-{
+void ofxUICanvas::mouseReleased(int x, int y, int button) {
     vector<ofxUIWidget *>::iterator it = widgets.begin();
     vector<ofxUIWidget *>::iterator eit = widgets.end();
-    for(; it != eit; ++it)
-    {
-        if((*it)->isVisible())
-        {
+    for(; it != eit; ++it) {
+        if((*it)->isVisible()) {
             (*it)->mouseReleased(x, y, button);
         }
     }
@@ -828,8 +804,7 @@ void ofxUICanvas::mouseReleased(int x, int y, int button)
 void ofxUICanvas::windowResized(int w, int h) {
     vector<ofxUIWidget *>::iterator it = widgets.begin();
     vector<ofxUIWidget *>::iterator eit = widgets.end();
-    for(; it != eit; ++it)
-    {
+    for(; it != eit; ++it) {
         (*it)->windowResized(w, h);
     }
 }
@@ -1459,7 +1434,7 @@ ofxUIRotarySlider* ofxUICanvas::addRotarySlider(string _name, float _min, float 
 }
 
 ofxUIRotarySlider* ofxUICanvas::addRotarySlider(string _name, float _min, float _max, float _value, float w, float x, float y, int _size) {
-    ofxUIRotarySlider* widget = new ofxUIRotarySlider(x, y, w, _min, _max, _value, _name, _size);
+    ofxUIRotarySlider* widget = new ofxUIRotarySlider(x, y, rect->getWidth()-widgetSpacing*2, _min, _max, _value, _name, _size);
     addWidgetPosition(widget, widgetPosition, widgetAlign);
     return widget;
 }
@@ -2056,11 +2031,11 @@ ofxUITextArea* ofxUICanvas::addTextArea(string _name, string _textstring, int _s
     return widget;
 }
 
-ofxUISortableList* ofxUICanvas::addSortableList(string _name, vector<std::string> _items, int _size, int _itemHeight) {
+ofxUISortableList* ofxUICanvas::addSortableList(string _name, vector<std::string> _items, int _size) {
     if(_size == -1) {
         _size = widgetFontSize;
     }    
-    ofxUISortableList *widget = new ofxUISortableList(_name, _items, rect->getWidth()-widgetSpacing*2, 0, 0, 0, _size, _itemHeight);
+    ofxUISortableList *widget = new ofxUISortableList(_name, _items, rect->getWidth()-widgetSpacing*2, 0, 0, 0, _size);
     addWidgetPosition(widget, widgetPosition, widgetAlign);
     return widget;
 }
@@ -3039,7 +3014,7 @@ bool ofxUICanvas::updateFont(ofxUIWidgetFontType _kind,
                 delete font_large;
             }
             font_large = new ofxUIFont();
-            success = font_large->load(filename,fontsize,_bAntiAliased, _bFullCharacterSet, makeContours, simplifyAmt,dpi);
+            success = font_large->loadFont(filename,fontsize,_bAntiAliased, _bFullCharacterSet, makeContours, simplifyAmt,dpi);
         }
             break;
             
@@ -3049,7 +3024,7 @@ bool ofxUICanvas::updateFont(ofxUIWidgetFontType _kind,
                 delete font_medium;
             }
             font_medium = new ofxUIFont();
-            success = font_medium->load(filename,fontsize,_bAntiAliased, _bFullCharacterSet, makeContours, simplifyAmt,dpi);
+            success = font_medium->loadFont(filename,fontsize,_bAntiAliased, _bFullCharacterSet, makeContours, simplifyAmt,dpi);
         }
             break;
             
@@ -3059,7 +3034,7 @@ bool ofxUICanvas::updateFont(ofxUIWidgetFontType _kind,
                 delete font_small;
             }
             font_small = new ofxUIFont();
-            success = font_small->load(filename,fontsize,_bAntiAliased, _bFullCharacterSet, makeContours, simplifyAmt,dpi);
+            success = font_small->loadFont(filename,fontsize,_bAntiAliased, _bFullCharacterSet, makeContours, simplifyAmt,dpi);
         }
             break;
     }

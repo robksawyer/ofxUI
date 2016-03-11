@@ -56,7 +56,6 @@ void ofxUIScrollableCanvas::initScrollable()
     sRect = new ofxUIRectangle(rect->x, rect->y, rect->getWidth(), rect->getHeight());
     paddedRect->setParent(sRect);
     isScrolling = false;
-    setShowOverflow(false); 
     vel.set(0);
     pos.set(0);
     ppos.set(0);
@@ -253,16 +252,10 @@ void ofxUIScrollableCanvas::update()
         }
         
         acc.limit(50);
-        vel += acc;
+        vel +=acc;
         vel.limit(100);
-        if(scrollX && fabs(vel.x) > 1.0)
-        {
-            rect->x += floor(vel.x);
-        }
-        if(scrollY && fabs(vel.y) > 1.0)
-        {
-            rect->y += floor(vel.y);
-        }
+        if(scrollX && fabs(vel.x) > 1.0) rect->x += floor(vel.x);
+        if(scrollY && fabs(vel.y) > 1.0) rect->y += floor(vel.y);
         
         vel *=damping;
         acc.set(0);
@@ -348,8 +341,8 @@ void ofxUIScrollableCanvas::draw()
 {
     ofxUIPushStyle();
     
-    ofDisableDepthTest();
-    ofDisableLighting();
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
     ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     ofxUISetRectMode(OFX_UI_RECTMODE_CORNER);
     ofSetLineWidth(1.0);
@@ -370,12 +363,8 @@ void ofxUIScrollableCanvas::draw()
     
     for(vector<ofxUIWidget *>::reverse_iterator it = widgets.rbegin(); it != widgets.rend(); ++it)
     {
-        if(bShowOverFlow) {
-            if((*it)->isVisible() && (*it)->getRect()->rIntersects(*sRect)) {
-                (*it)->draw();
-            }
-        }
-        else if((*it)->isVisible() && (*it)->getRect()->rInside(*sRect)) {
+        if((*it)->isVisible() && (*it)->getRect()->rInside(*sRect))
+        {
             (*it)->draw();
         }
     }

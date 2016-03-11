@@ -28,7 +28,6 @@
 #include "ofxUISlider.h"
 #include "ofxUIWidget.h"
 #include "ofxUIButton.h"
-#include "ofxUIRadio.h"
 #include "ofxUIToggle.h"
 
 class ofxUICanvas;
@@ -39,16 +38,8 @@ public:
 	ofxUIEventArgs();
     ofxUIEventArgs(ofxUIWidget *_widget);
     ofxUIButton *getButton();
-    ofxUIRadio  *getRadio();
     ofxUIToggle *getToggle();
     ofxUISlider *getSlider();
-
-    bool isName(string _name);
-    bool getBool();
-    float getFloat();
-    double getDouble();
-    int getInt();
-    
     ofxUICanvas *getCanvasParent();
     ofxUIWidget *getParent();
 

@@ -44,7 +44,6 @@ void ofxUIDraggableLabelButton::init(string _name, bool *_value, float w, float 
     isDraggedOut = false;
     kind = OFX_UI_WIDGET_DRAGABLELABELBUTTON;
     id = "";
-    this->name = _name;
 }
 
 bool ofxUIDraggableLabelButton::isDraggable()

@@ -35,6 +35,7 @@ public:
     ofxUIDropDownList(float w, string _name, vector<string> items, int _size);
     ofxUIDropDownList(float x, float y, string _name, vector<string> items, int _size);
     void init(string _name, vector<string> items, float w = 0, float x = 0, float y = 0, int _size = OFX_UI_FONT_MEDIUM);
+    virtual void draw();
     void clearToggles();
     void clearSelected();
     void addToggle(string toggleName);
@@ -63,15 +64,6 @@ public:
     virtual void setValue(bool _value);
     virtual void setModal(bool _modal);      
     bool isOpen();
-    bool hasState() { return true; }
-    
-#ifndef OFX_UI_NO_XML
-    virtual void saveState(ofxXmlSettings *XML);
-    virtual void loadState(ofxXmlSettings *XML);
-#endif
-    
-    //sets the selected toggle for a dropdown and displays it; does not allow multiple selected options
-    void setSingleSelected(int index);
     
 protected:
     bool autoSize; 

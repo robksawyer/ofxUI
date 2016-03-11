@@ -67,22 +67,6 @@ void ofxUIRadio::setVisible(bool _visible)
         t->setVisible(visible);
     }
 }
-
-bool ofxUIRadio::hasToggle(string _name)
-{
-	vector<ofxUIToggle *>::iterator it = toggles.begin();
-	vector<ofxUIToggle *>::iterator eit = toggles.end();
-    for(; it != eit; ++it)
-    {
-        ofxUIToggle *t = (*it);
-        if(t->getName() == _name)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 void ofxUIRadio::activateToggle(string _name)
 {
     for(unsigned int i = 0; i < toggles.size(); i++)
@@ -105,11 +89,8 @@ void ofxUIRadio::triggerSelf()
 {
     if(parent != NULL)
     {
-        if(active != NULL)
-        {
-            parent->triggerEvent(active);
-        }
         parent->triggerEvent(this);
+        parent->triggerEvent(active);
     }
 }
 

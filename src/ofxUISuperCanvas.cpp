@@ -129,74 +129,13 @@ void ofxUISuperCanvas::autoSizeToFitWidgets()
     canvasTitle->getRect()->setWidth(rect->getWidth()-widgetSpacing*2);    
 }
 
-bool ofxUISuperCanvas::didHitHeaderWidgets(float x, float y)
-{
-    vector<ofxUIWidget *>::iterator it = headerWidgets.begin();
-    vector<ofxUIWidget *>::iterator eit = headerWidgets.end();
-    for(; it != eit; ++it)
-    {
-        if((*it)->isHit(x, y))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-void ofxUISuperCanvas::keyPressed(int key)
-{
-    if(getIsBindedToKey(key) && !bKeyHit)
-    {
-        bKeyHit = true;
-        lastPosition = ofxUIVec2f(rect->getX(), rect->getY());
-        setMinified(false);
-        rect->setX(ofGetMouseX());
-        rect->setY(ofGetMouseY()); 
-        if(getTriggerType() & OFX_UI_TRIGGER_BEGIN)
-        {
-            triggerEvent(this);
-        }
-    }
-
-    ofxUICanvas::keyPressed(key);
-}
-
-void ofxUISuperCanvas::keyReleased(int key)
-{
-    if(getIsBindedToKey(key) && bKeyHit)
-    {
-        bKeyHit = false;
-        if((ofGetElapsedTimef() - lastHitTime) < deltaTime)
-        {
-            setMinified(false);
-            lastPosition = ofxUIVec2f(ofGetMouseX(), ofGetMouseY());
-            if(getTriggerType() & OFX_UI_TRIGGER_BEGIN)
-            {
-                triggerEvent(this);
-            }
-        }
-        else
-        {
-            setMinified(true);
-            rect->setX(lastPosition.x);
-            rect->setY(lastPosition.y);
-            if(getTriggerType() & OFX_UI_TRIGGER_END)
-            {
-                triggerEvent(this);
-            }
-        }
-        lastHitTime = ofGetElapsedTimef();
-    }
-    ofxUICanvas::keyReleased(key);
-}
-
 #ifdef OFX_UI_TARGET_TOUCH
 
 void ofxUISuperCanvas::touchDown(float x, float y, int id)
 {
     if(touchId == -1)
     {
-        if(rect->inside(x, y) && didHitHeaderWidgets(x, y))
+        if(rect->inside(x, y) && canvasTitle->isHit(x, y))
         {
             touchId = id;
             bTitleLabelHit = true;
@@ -233,24 +172,10 @@ void ofxUISuperCanvas::touchUp(float x, float y, int id)
 
 void ofxUISuperCanvas::touchDoubleTap(float x, float y, int id)
 {
-    if(rect->inside(x, y) && didHitHeaderWidgets(x, y))
+    if(rect->inside(x, y) && canvasTitle->isHit(x, y))
     {
-        if(isMinified())
-        {
-            setMinified(false);
-            if(getTriggerType() & OFX_UI_TRIGGER_BEGIN)
-            {
-                triggerEvent(this);
-            }
-        }
-        else
-        {
-            setMinified(true);
-            if(getTriggerType() & OFX_UI_TRIGGER_END)
-            {
-                triggerEvent(this);
-            }
-        }
+        toggleMinified();
+        triggerEvent(this);
         return;
     }
     canvasTouchDoubleTap(x, y, id);
@@ -276,29 +201,15 @@ void ofxUISuperCanvas::onMouseReleased(ofMouseEventArgs& data)
 
 void ofxUISuperCanvas::onMousePressed(ofMouseEventArgs& data)
 {
-    if(rect->inside(data.x, data.y) && didHitHeaderWidgets(data.x, data.y))
+    if(rect->inside(data.x, data.y) && canvasTitle->isHit(data.x, data.y))
     {
         bTitleLabelHit = true;
         hitPoint.set(data.x - rect->getX(), data.y - rect->getY());
         
         if((ofGetElapsedTimef() - lastHitTime) < deltaTime)
         {
-            if(isMinified())
-            {
-                setMinified(false);
-                if(getTriggerType() & OFX_UI_TRIGGER_BEGIN)
-                {
-                    triggerEvent(this);
-                }
-            }
-            else
-            {
-                setMinified(true);
-                if(getTriggerType() & OFX_UI_TRIGGER_END)
-                {
-                    triggerEvent(this);
-                }
-            }
+            toggleMinified();
+            triggerEvent(this);            
             return;
         }
         lastHitTime = ofGetElapsedTimef();
